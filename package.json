@@ -1,0 +1,25 @@
+{
+  "name": "node-compass",
+  "version": "0.0.1",
+  "author": {
+    "name": "Alexandre Anseline",
+    "email": "alexandre.anseline@yahoo.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Xlander11/node-compass.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Xlander11/node-compass/issues"
+  },
+  "readmeFilename": "README.md",
+  "main": "index.js",
+  "keywords": [
+    "compass",
+    "scss",
+    "compile",
+    "css",
+    "assets"
+  ],
+  "license": "MIT"
+}
