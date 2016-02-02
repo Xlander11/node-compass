@@ -19,7 +19,7 @@ function compass(configPath){
             throw "The path given is not a compass configuration file";
         }
     }catch(e){
-        console.log(e);
+        console.error(e);
     }
 
     if(hasConfig) {
@@ -36,12 +36,29 @@ function compass(configPath){
                 });
             },
             watch: () => {
-                exec("compass watch", (error, stdout, stderr) => {
-                    console.log(`${stdout}`);
+                var file, args, command = ["compass", "watch"], options = {};
 
-                    if (error !== null) {
-                        console.log(`exec error: ${error}`);
-                    }
+                if(process.platform === "win32"){
+                    file = "cmd";
+                    args = ["/s", "/c"].concat(command);
+                    options.windowsVerbatimArguments = true;
+                }else{
+                    file = "sh";
+                    args = ['-c'].concat(command);
+                }
+
+                var compassSpawn = spawn(file, args, options);
+
+                compassSpawn.stdout.on("data", (data) => {
+                    console.log(`${data}`);
+                });
+
+                compassSpawn.stderr.on("data", (data) => {
+                    console.log(`${data}`);
+                });
+
+                compassSpawn.on('close', (code) => {
+                    console.log(`child process exited with code ${code}`);
                 });
             }
         }
