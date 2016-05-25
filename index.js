@@ -67,3 +67,5 @@ function compass(configPath){
         return false;
     }
 }
+
+module.exports = compass;
