@@ -4,7 +4,8 @@
 
 const childProcess = require("child_process"),
     fs = require("fs"),
-    exec = childProcess.exec;
+    exec = childProcess.exec,
+    spawn = childProcess.spawn;
 
 
 function compass(configPath){
@@ -43,8 +44,8 @@ function compass(configPath){
                     args = ["/s", "/c"].concat(command);
                     options.windowsVerbatimArguments = true;
                 }else{
-                    file = "sh";
-                    args = ['-c'].concat(command);
+                    file = "compass";
+                    args = ["watch"];
                 }
 
                 var compassSpawn = spawn(file, args, options);
@@ -66,5 +67,3 @@ function compass(configPath){
         return false;
     }
 }
-
-module.exports = compass;
