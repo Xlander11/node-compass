@@ -25,18 +25,24 @@ function compass(configPath){
 
     if(hasConfig) {
         return {
-            compile: () => {
-                console.time("Compile");
+            compile: (cb) => {
                 exec("compass compile", (error, stdout, stderr) => {
-                    console.log(`${stdout}`);
-                    console.timeEnd("Compile");
-
                     if (error !== null) {
-                        console.log(`exec error: ${error}`);
+                       if(cb && typeof cb == "function"){
+                           cb(error);
+                       }else{
+                           console.log(error.toString("utf-8"));
+                       }
+                    }else{
+                        if(cb && typeof cb == "function"){
+                            cb(stdout);
+                        }else{
+                            console.log(stdout.toString("utf-8"));
+                        }
                     }
                 });
             },
-            watch: () => {
+            watch: (success, error) => {
                 var file, args, command = ["compass", "watch"], options = {};
 
                 if(process.platform === "win32"){
@@ -51,15 +57,19 @@ function compass(configPath){
                 var compassSpawn = spawn(file, args, options);
 
                 compassSpawn.stdout.on("data", (data) => {
-                    console.log(`${data}`);
+                    if(success && typeof success == "function"){
+                        success(data);
+                    }else{
+                        console.log(data.toString("utf-8"));
+                    }
                 });
 
                 compassSpawn.stderr.on("data", (data) => {
-                    console.log(`${data}`);
-                });
-
-                compassSpawn.on('close', (code) => {
-                    console.log(`child process exited with code ${code}`);
+                    if(error && typeof error == "function"){
+                        error(data);
+                    }else{
+                        console.log(data.toString("utf-8"));
+                    }
                 });
             }
         }
